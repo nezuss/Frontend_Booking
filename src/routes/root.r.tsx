@@ -3,6 +3,7 @@ import { type RouteObject } from "react-router-dom";
 // ? Routes
 import { authRoutes } from "./auth.r";
 import { clientRoutes } from "./client.r";
+import { adminRoutes } from "./admin.r";
 
 // ? Layouts
 import { RootLayout } from "@/layouts/root.l";
@@ -16,6 +17,7 @@ import { Locations } from "@/pages/locations.p";
 export const routes: RouteObject[] = [
   ...authRoutes,
   ...clientRoutes,
+  ...adminRoutes,
   {
     path: "/",
     Component: RootLayout,
