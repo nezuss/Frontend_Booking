@@ -54,7 +54,7 @@ export function NavbarLayout({
                     <DropdownMenuContent className="mr-8">
                       <DropdownMenuGroup>
                         <DropdownMenuLabel>Administrative</DropdownMenuLabel>
-                        <Link to="/a/dashboard">
+                        <Link to="/a">
                           <DropdownMenuItem>Dashboard</DropdownMenuItem>
                         </Link>
                         <Link to="/a/reservations">

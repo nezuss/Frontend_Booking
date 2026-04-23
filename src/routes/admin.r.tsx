@@ -4,7 +4,9 @@ import { type RouteObject } from "react-router-dom";
 import { AdminLayout } from "@/layouts/admin.l";
 
 // ? Pages
-import { Reservations } from "@/pages/client/reservations";
+import { Dashboard } from "@/pages/admin/dashboard.p";
+import { Reservations } from "@/pages/admin/reservations.p";
+import { Locations } from "@/pages/admin/locations.p";
 
 export const adminRoutes: RouteObject[] = [
   {
@@ -12,8 +14,16 @@ export const adminRoutes: RouteObject[] = [
     Component: AdminLayout,
     children: [
       {
+        path: "",
+        element: <Dashboard />,
+      },
+      {
         path: "reservations",
         element: <Reservations />,
+      },
+      {
+        path: "locations",
+        element: <Locations />,
       },
     ],
   },

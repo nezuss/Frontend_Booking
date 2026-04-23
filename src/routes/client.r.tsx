@@ -4,7 +4,7 @@ import { type RouteObject } from "react-router-dom";
 import { ClientLayout } from "@/layouts/client.l";
 
 // ? Pages
-import { Reservations } from "@/pages/client/reservations";
+import { Reservations } from "@/pages/client/reservations.p";
 
 export const clientRoutes: RouteObject[] = [
   {

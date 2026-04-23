@@ -54,7 +54,6 @@ export function Home(): React.ReactNode {
             <div key={id} className="space-y-4">
               <div
                 style={{ backgroundImage: `url(${item.iconUrl})` }}
-                alt={item.title}
                 className="h-76 w-64 bg-cover bg-center rounded-2xl"
               />
               <p className="flex items-center text-background justify-center text-2xl gap-x-2">
