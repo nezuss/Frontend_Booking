@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Pie, PieChart } from "recharts";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import { cn } from "@/lib/utils";
 
 // ? Icons
-import { MapPinHouse, Users, KeyRound } from "lucide-react";
+import { MapPinHouse, Users, KeyRound, Ban, Briefcase } from "lucide-react";
 
 // ? Components
 import {
@@ -12,31 +12,51 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { title } from "process";
 
-const chartData = [
-  { type: "active", clients: 275, fill: "var(--color-active)" },
-  { type: "cancelled", clients: 200, fill: "var(--color-cancelled)" },
+const rbmData = [
+  { name: "chrome", count: 275, fill: "var(--color-chrome)" },
+  { name: "safari", count: 200, fill: "var(--color-safari)" },
+  { name: "firefox", count: 187, fill: "var(--color-firefox)" },
+  { name: "edge", count: 173, fill: "var(--color-edge)" },
+  { name: "other", count: 90, fill: "var(--color-other)" },
 ];
+const rblData = rbmData;
+const rbsData = rbmData;
 
-const chartConfig = {
-  clients: {
-    label: "Clients",
+const rbmConfig = {
+  count: {
+    label: "Count",
   },
-  active: {
-    label: "Active",
+  chrome: {
+    label: "Chrome",
     color: "var(--chart-1)",
   },
-  cancelled: {
-    label: "Cancelled",
+  safari: {
+    label: "Safari",
     color: "var(--chart-2)",
   },
+  firefox: {
+    label: "Firefox",
+    color: "var(--chart-3)",
+  },
+  edge: {
+    label: "Edge",
+    color: "var(--chart-4)",
+  },
+  other: {
+    label: "Other",
+    color: "var(--chart-5)",
+  },
 } satisfies ChartConfig;
+const rblConfig = rbmConfig;
+const rbsConfig = rbmConfig;
 
 interface TotalSums {
   reservations: number;
   users: number;
   locations: number;
+  activeReservations: number;
+  cancelledReservations: number;
 }
 
 export function Dashboard() {
@@ -44,11 +64,13 @@ export function Dashboard() {
     reservations: 1,
     users: 61,
     locations: 561,
+    activeReservations: 61,
+    cancelledReservations: 11,
   });
 
   return (
-    <>
-      <div className="flex flex-row gap-6">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {[
           {
             color: "bg-primary",
@@ -57,16 +79,28 @@ export function Dashboard() {
             value: totalSums?.reservations,
           },
           {
-            color: "bg-primary/75",
+            color: "bg-primary/85",
             title: "Users",
             icon: <Users />,
             value: totalSums?.users,
           },
           {
-            color: "bg-primary/50",
+            color: "bg-primary/75",
             title: "Locations",
             icon: <MapPinHouse />,
             value: totalSums?.locations,
+          },
+          {
+            color: "bg-primary/50",
+            title: "Active Reservations",
+            icon: <Briefcase />,
+            value: totalSums?.activeReservations,
+          },
+          {
+            color: "bg-primary/35",
+            title: "Cancelled Reservations",
+            icon: <Ban />,
+            value: totalSums?.cancelledReservations,
           },
         ].map((item) => (
           <div
@@ -83,18 +117,56 @@ export function Dashboard() {
           </div>
         ))}
       </div>
-      <ChartContainer
-        config={chartConfig}
-        className="mx-auto aspect-square max-h-[250px]"
-      >
-        <PieChart>
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
-          <Pie data={chartData} dataKey="clients" nameKey="type" />
-        </PieChart>
-      </ChartContainer>
-    </>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[
+          {
+            title: "Reservations by month",
+            data: rbmData,
+            config: rbmConfig,
+          },
+          {
+            title: "Reservations by Location",
+            data: rblData,
+            config: rblConfig,
+          },
+          {
+            title: "Reservations by Status",
+            data: rbsData,
+            config: rbsConfig,
+          },
+        ].map((item) => (
+          <div className="min-w-64 w-full border rounded-2xl p-4">
+            <h2 className="text-2xl mb-4">{item.title}</h2>
+            <ChartContainer config={item.config}>
+              <BarChart
+                accessibilityLayer
+                data={item.data}
+                layout="horizontal"
+                margin={{
+                  left: 0,
+                }}
+              >
+                <XAxis
+                  dataKey="name"
+                  type="category"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  tickFormatter={(value) =>
+                    item.config[value as keyof typeof item.config]?.label
+                  }
+                />
+                <YAxis dataKey="count" type="number" hide />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <Bar dataKey="count" radius={5} />
+              </BarChart>
+            </ChartContainer>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
