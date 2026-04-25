@@ -59,25 +59,31 @@ export function NavbarLayout({
                       </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="mr-8">
-                      <DropdownMenuGroup>
-                        <DropdownMenuLabel>Administrative</DropdownMenuLabel>
-                        <Link to="/a" onClick={() => setActiveMenu(0)}>
-                          <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                        </Link>
-                        <Link
-                          to="/a/reservations"
-                          onClick={() => setActiveMenu(1)}
-                        >
-                          <DropdownMenuItem>Reservations</DropdownMenuItem>
-                        </Link>
-                        <Link
-                          to="/a/locations"
-                          onClick={() => setActiveMenu(2)}
-                        >
-                          <DropdownMenuItem>Locations</DropdownMenuItem>
-                        </Link>
-                      </DropdownMenuGroup>
-                      <DropdownMenuSeparator />
+                      {user?.role === "admin" && (
+                        <>
+                          <DropdownMenuGroup>
+                            <DropdownMenuLabel>
+                              Administrative
+                            </DropdownMenuLabel>
+                            <Link to="/a" onClick={() => setActiveMenu(0)}>
+                              <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                            </Link>
+                            <Link
+                              to="/a/reservations"
+                              onClick={() => setActiveMenu(1)}
+                            >
+                              <DropdownMenuItem>Reservations</DropdownMenuItem>
+                            </Link>
+                            <Link
+                              to="/a/locations"
+                              onClick={() => setActiveMenu(2)}
+                            >
+                              <DropdownMenuItem>Locations</DropdownMenuItem>
+                            </Link>
+                          </DropdownMenuGroup>
+                          <DropdownMenuSeparator />
+                        </>
+                      )}
                       <DropdownMenuGroup>
                         <DropdownMenuLabel>Account</DropdownMenuLabel>
                         <Link to="/c/reservations">

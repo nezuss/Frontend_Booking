@@ -1,42 +1,52 @@
+import { useEffect, useState } from "react";
+
+// ? Api
+import { getReservations } from "@/api/reservations";
+
 // ? Components
 import { Button } from "@/components/ui/button";
 
 export function Reservations() {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const result = await getReservations();
+
+        if (result.success) {
+          setReservations(result.content?.reservations);
+        } else {
+          console.error(result.content?.message);
+        }
+      } catch (err) {
+        console.error(err?.message);
+      }
+    };
+
+    fetchReservations();
+  }, []);
+
   return (
     <div>
       <h1 className="text-4xl mb-4">My Reservations</h1>
       <div className="flex flex-col gap-y-4">
-        <Reservation
-          id={2341}
-          checkIn={"fsgdfg"}
-          checkOut={"sdgdfgsdgd"}
-          guests={5123}
-          status={"sfgsdgdfgsd"}
-          roomName={"fgsdfgsdfgsdfg"}
-          rootType={"sdfgdfggf"}
-        />
-        <Reservation
-          id={2341}
-          checkIn={"fsgdfg"}
-          checkOut={"sdgdfgsdgd"}
-          guests={5123}
-          status={"sfgsdgdfgsd"}
-          roomName={"fgsdfgsdfgsdfg"}
-          rootType={"sdfgdfggf"}
-          onDelete={() => {}}
-        />
-        <Reservation
-          id={2341}
-          checkIn={"fsgdfg"}
-          checkOut={"sdgdfgsdgd"}
-          guests={5123}
-          status={"sfgsdgdfgsd"}
-          roomName={"fgsdfgsdfgsdfg"}
-          rootType={"sdfgdfggf"}
-        />
+        {reservations.map((reservation) => (
+          <Reservation key={reservation.id} {...reservation} />
+        ))}
       </div>
     </div>
   );
+}
+
+interface Reservation {
+  id: number;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  status: string;
+  roomName: string;
+  rootType: string;
 }
 
 const Reservation = ({
@@ -48,14 +58,7 @@ const Reservation = ({
   roomName,
   rootType,
   onDelete,
-}: {
-  id: number;
-  checkIn: string;
-  checkOut: string;
-  guests: number;
-  status: string;
-  roomName: string;
-  rootType: string;
+}: Reservation & {
   onDelete?: () => void;
 }) => {
   return (
