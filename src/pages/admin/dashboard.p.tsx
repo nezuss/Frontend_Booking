@@ -1,72 +1,127 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import { cn } from "@/lib/utils";
 
 // ? Icons
-import { MapPinHouse, Users, KeyRound, Ban, Briefcase } from "lucide-react";
+import {
+  MapPinHouse,
+  Users,
+  KeyRound,
+  Ban,
+  Briefcase,
+  House,
+} from "lucide-react";
+
+// ? Api
+import { getDashboardInfo } from "@/api/admin";
 
 // ? Components
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 
-const rbmData = [
-  { name: "chrome", count: 275, fill: "var(--color-chrome)" },
-  { name: "safari", count: 200, fill: "var(--color-safari)" },
-  { name: "firefox", count: 187, fill: "var(--color-firefox)" },
-  { name: "edge", count: 173, fill: "var(--color-edge)" },
-  { name: "other", count: 90, fill: "var(--color-other)" },
-];
-const rblData = rbmData;
-const rbsData = rbmData;
-
-const rbmConfig = {
-  count: {
-    label: "Count",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig;
-const rblConfig = rbmConfig;
-const rbsConfig = rbmConfig;
-
 interface TotalSums {
-  reservations: number;
-  users: number;
-  locations: number;
+  totalReservations: number;
+  totalUsers: number;
+  totalRooms: number;
+  totalLocations: number;
   activeReservations: number;
   cancelledReservations: number;
 }
 
 export function Dashboard() {
   const [totalSums, setTotalSums] = useState<TotalSums>({
-    reservations: 1,
-    users: 61,
-    locations: 561,
-    activeReservations: 61,
-    cancelledReservations: 11,
+    totalReservations: 0,
+    totalUsers: 0,
+    totalRooms: 0,
+    totalLocations: 0,
+    activeReservations: 0,
+    cancelledReservations: 0,
   });
+
+  const [rbmData, setRbmData] = useState([]);
+  const [rblData, setRblData] = useState([]);
+  const [rbsData, setRbsData] = useState([]);
+
+  const [rbmConfig, setRbmConfig] = useState({});
+  const [rblConfig, setRblConfig] = useState({});
+  const [rbsConfig, setRbsConfig] = useState({});
+
+  useEffect(() => {
+    const fetchDashboardInfo = async () => {
+      try {
+        const result = await getDashboardInfo();
+
+        if (result.success) {
+          setTotalSums(result.content?.summary);
+          setRbmData(
+            result.content?.reservationsByMonth.map((item) => ({
+              name: item.month,
+              count: item.count,
+              fill: `var(--chart-1)`,
+            })),
+          );
+          setRblData(
+            result.content?.reservationsByLocation.map((item) => ({
+              name: item.name,
+              count: item.count,
+              fill: `var(--chart-1)`,
+            })),
+          );
+          setRbsData(
+            result.content?.reservationsByStatus.map((item) => ({
+              name: item.status,
+              count: item.count,
+              fill: `var(--chart-1)`,
+            })),
+          );
+          setRbmConfig(
+            result.content?.reservationsByMonth.reduce(
+              (config, { month, count }) => {
+                config[month] = {
+                  label: month,
+                  count,
+                };
+                return config;
+              },
+              {},
+            ),
+          );
+          setRblConfig(
+            result.content?.reservationsByLocation.reduce(
+              (config, { name, count }) => {
+                config[name] = {
+                  label: name,
+                  count,
+                };
+                return config;
+              },
+              {},
+            ),
+          );
+          setRbsConfig(
+            result.content?.reservationsByStatus.reduce(
+              (config, { status, count }) => {
+                config[status] = {
+                  label: status,
+                  count,
+                };
+                return config;
+              },
+              {},
+            ),
+          );
+        } else {
+          console.error(result.content?.message);
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    fetchDashboardInfo();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -76,19 +131,25 @@ export function Dashboard() {
             color: "bg-primary",
             title: "Reservations",
             icon: <KeyRound />,
-            value: totalSums?.reservations,
+            value: totalSums?.totalReservations,
           },
           {
             color: "bg-primary/85",
             title: "Users",
             icon: <Users />,
-            value: totalSums?.users,
+            value: totalSums?.totalUsers,
+          },
+          {
+            color: "bg-primary/85",
+            title: "Rooms",
+            icon: <House />,
+            value: totalSums?.totalRooms,
           },
           {
             color: "bg-primary/75",
             title: "Locations",
             icon: <MapPinHouse />,
-            value: totalSums?.locations,
+            value: totalSums?.totalLocations,
           },
           {
             color: "bg-primary/50",

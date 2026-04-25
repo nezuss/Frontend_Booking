@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
+// ? Hooks
+import { useUserInfoNavbar } from "@/context/user-info-navbar.c";
+
 // ? Api
 import { login } from "@/api/auth";
 
@@ -13,6 +16,8 @@ export function Login(): React.ReactNode {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { setUser } = useUserInfoNavbar();
 
   const [jwt, setJwt] = useCookies(["token"]);
 
@@ -30,6 +35,8 @@ export function Login(): React.ReactNode {
           secure: true,
           maxAge: 3600,
         });
+
+        setUser(result.content?.user);
 
         navigate("/");
       } else {

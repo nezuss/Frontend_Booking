@@ -1,15 +1,93 @@
-import { client } from "./client";
+import { clientCredentials } from "./client";
+
+// ? Classes
+import { ApiResponse } from "@/classes/api-responce.c";
 
 export const getDashboardInfo = async () => {
-  return client.get("/admin/reservations");
+  return clientCredentials
+    .get("/admin/dashboard")
+    .then((res) => {
+      return new ApiResponse({
+        success: true,
+        content: res.data,
+      });
+    })
+    .catch((error) => {
+      if (error.response) {
+        return new ApiResponse({
+          success: false,
+          content: error.response.data,
+        });
+      } else if (error.request) {
+        return new ApiResponse({
+          success: false,
+          content: "No Response: " + error.request,
+        });
+      } else {
+        return new ApiResponse({
+          success: false,
+          content: "Error Message: " + error.message,
+        });
+      }
+    });
 };
 
-export const getReservation = async () => {
-  return client.get(`/admin/reservations`);
+export const getReservations = async () => {
+  return clientCredentials
+    .get(`/admin/reservations`)
+    .then((res) => {
+      return new ApiResponse({
+        success: true,
+        content: res.data,
+      });
+    })
+    .catch((error) => {
+      if (error.response) {
+        return new ApiResponse({
+          success: false,
+          content: error.response.data,
+        });
+      } else if (error.request) {
+        return new ApiResponse({
+          success: false,
+          content: "No Response: " + error.request,
+        });
+      } else {
+        return new ApiResponse({
+          success: false,
+          content: "Error Message: " + error.message,
+        });
+      }
+    });
 };
 
-export const getLocation = async () => {
-  return client.get(`/admin/locations`);
+export const getLocations = async () => {
+  return clientCredentials
+    .get(`/admin/locations`)
+    .then((res) => {
+      return new ApiResponse({
+        success: true,
+        content: res.data,
+      });
+    })
+    .catch((error) => {
+      if (error.response) {
+        return new ApiResponse({
+          success: false,
+          content: error.response.data,
+        });
+      } else if (error.request) {
+        return new ApiResponse({
+          success: false,
+          content: "No Response: " + error.request,
+        });
+      } else {
+        return new ApiResponse({
+          success: false,
+          content: "Error Message: " + error.message,
+        });
+      }
+    });
 };
 
 export const createLocation = async ({
@@ -31,18 +109,43 @@ export const createLocation = async ({
   hasWellnessCenter: boolean;
   imageUrl: string;
 }) => {
-  return client.post(`/admin/locations`, {
-    params: {
-      name,
-      city,
-      address,
-      description,
-      rating,
-      hasFreeParking,
-      hasWellnessCenter,
-      imageUrl,
-    },
-  });
+  return clientCredentials
+    .post(`/admin/locations`, {
+      params: {
+        name,
+        city,
+        address,
+        description,
+        rating,
+        hasFreeParking,
+        hasWellnessCenter,
+        imageUrl,
+      },
+    })
+    .then((res) => {
+      return new ApiResponse({
+        success: true,
+        content: res.data,
+      });
+    })
+    .catch((error) => {
+      if (error.response) {
+        return new ApiResponse({
+          success: false,
+          content: error.response.data,
+        });
+      } else if (error.request) {
+        return new ApiResponse({
+          success: false,
+          content: "No Response: " + error.request,
+        });
+      } else {
+        return new ApiResponse({
+          success: false,
+          content: "Error Message: " + error.message,
+        });
+      }
+    });
 };
 
 export const updateLocation = async ({
@@ -66,20 +169,70 @@ export const updateLocation = async ({
   hasWellnessCenter: boolean;
   imageUrl: string;
 }) => {
-  return client.put(`/admin/locations/${id}`, {
-    params: {
-      name,
-      city,
-      address,
-      description,
-      rating,
-      hasFreeParking,
-      hasWellnessCenter,
-      imageUrl,
-    },
-  });
+  return clientCredentials
+    .put(`/admin/locations/${id}`, {
+      params: {
+        name,
+        city,
+        address,
+        description,
+        rating,
+        hasFreeParking,
+        hasWellnessCenter,
+        imageUrl,
+      },
+    })
+    .then((res) => {
+      return new ApiResponse({
+        success: true,
+        content: res.data,
+      });
+    })
+    .catch((error) => {
+      if (error.response) {
+        return new ApiResponse({
+          success: false,
+          content: error.response.data,
+        });
+      } else if (error.request) {
+        return new ApiResponse({
+          success: false,
+          content: "No Response: " + error.request,
+        });
+      } else {
+        return new ApiResponse({
+          success: false,
+          content: "Error Message: " + error.message,
+        });
+      }
+    });
 };
 
 export const deleteLocation = async (id: number) => {
-  return client.delete(`/admin/locations/${id}`);
+  return clientCredentials
+    .delete(`/admin/locations/${id}`)
+    .then((res) => {
+      return new ApiResponse({
+        success: true,
+        content: res.data,
+      });
+    })
+    .catch((error) => {
+      if (error.response) {
+        return new ApiResponse({
+          success: false,
+          content: error.response.data,
+        });
+      } else if (error.request) {
+        return new ApiResponse({
+          success: false,
+          content: "No Response: " + error.request,
+        });
+      } else {
+        return new ApiResponse({
+          success: false,
+          content: "Error Message: " + error.message,
+        });
+      }
+    });
 };

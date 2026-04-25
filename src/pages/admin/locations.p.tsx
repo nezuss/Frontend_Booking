@@ -1,53 +1,51 @@
+import { useState, useEffect } from "react";
+
+// ? Api
+import { getLocations } from "@/api/admin";
+
 export function Locations() {
+  const [locations, setLocations] = useState<Location[]>([]);
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const result = await getLocations();
+
+        if (result.success) {
+          setLocations(result.content.locations);
+        } else {
+          console.error(result.content?.message);
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    fetchLocations();
+  }, []);
+
   return (
     <div>
       <h1 className="text-4xl mb-4">Locations List</h1>
       <div className="flex flex-col gap-y-4">
-        <Location
-          id={2341}
-          name={"Location 1"}
-          city={"City"}
-          address={"Address"}
-          description={"Description"}
-          rating={4}
-          hasFreeParking={true}
-          hasWellnessCenter={true}
-          imageUrl={
-            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/505611856.jpg?k=df5500b856bdf612013310eee2e201e323fc1b4d74574009f0b965cc98793bfe&o="
-          }
-          roomCount={10}
-        />
-        <Location
-          id={2341}
-          name={"Location 1"}
-          city={"City"}
-          address={"Address"}
-          description={"Description"}
-          rating={4}
-          hasFreeParking={true}
-          hasWellnessCenter={true}
-          imageUrl={
-            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/505611856.jpg?k=df5500b856bdf612013310eee2e201e323fc1b4d74574009f0b965cc98793bfe&o="
-          }
-          roomCount={10}
-        />
-        <Location
-          id={2341}
-          name={"Location 1"}
-          city={"City"}
-          address={"Address"}
-          description={"Description"}
-          rating={4}
-          hasFreeParking={true}
-          hasWellnessCenter={true}
-          imageUrl={
-            "https://cf.bstatic.com/xdata/images/hotel/max1024x768/505611856.jpg?k=df5500b856bdf612013310eee2e201e323fc1b4d74574009f0b965cc98793bfe&o="
-          }
-          roomCount={10}
-        />
+        {locations.map((location) => (
+          <Location key={"adm-lc-" + location.id} {...location} />
+        ))}
       </div>
     </div>
   );
+}
+
+interface Location {
+  id: number;
+  name: string;
+  city: string;
+  address: string;
+  description: string;
+  rating: number;
+  hasFreeParking: boolean;
+  hasWellnessCenter: boolean;
+  imageUrl: string;
+  roomCount: number;
 }
 
 const Location = ({
@@ -61,18 +59,7 @@ const Location = ({
   hasWellnessCenter,
   imageUrl,
   roomCount,
-}: {
-  id: number;
-  name: string;
-  city: string;
-  address: string;
-  description: string;
-  rating: number;
-  hasFreeParking: boolean;
-  hasWellnessCenter: boolean;
-  imageUrl: string;
-  roomCount: number;
-}) => {
+}: Location) => {
   return (
     <div
       key={id}

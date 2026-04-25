@@ -1,38 +1,51 @@
-// ? Components
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+
+// ? Api
+import { getReservations } from "@/api/admin";
 
 export function Reservations() {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const result = await getReservations();
+
+        if (result.success) {
+          setReservations(result.content.reservations);
+        } else {
+          console.error(result.content?.message);
+        }
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    fetchReservations();
+  }, []);
+
   return (
     <div>
       <h1 className="text-4xl mb-4">Reservations List</h1>
       <div className="flex flex-col gap-y-4">
-        <Reservation
-          id={2341}
-          guestName={"John Doe"}
-          guestEmail={"john@example.com"}
-          roomName={"Room 101"}
-          locationName={"Main Street"}
-          locationCity={"City"}
-          checkIn={"2024-01-01"}
-          checkOut={"2024-01-05"}
-          guests={2}
-          status={"Confirmed"}
-        />
-        <Reservation
-          id={2342}
-          guestName={"Jane Doe"}
-          guestEmail={"jane@example.com"}
-          roomName={"Room 102"}
-          locationName={"Main Street"}
-          locationCity={"City"}
-          checkIn={"2024-01-01"}
-          checkOut={"2024-01-05"}
-          guests={2}
-          status={"Confirmed"}
-        />
+        {reservations.map((reservation) => (
+          <Reservation key={"adm-rsv-" + reservation.id} {...reservation} />
+        ))}
       </div>
     </div>
   );
+}
+
+interface Reservation {
+  id: number;
+  guestName: string;
+  guestEmail: string;
+  roomName: string;
+  locationName: string;
+  locationCity: string;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  status: string;
 }
 
 const Reservation = ({
@@ -46,18 +59,7 @@ const Reservation = ({
   checkOut,
   guests,
   status,
-}: {
-  id: number;
-  guestName: string;
-  guestEmail: string;
-  roomName: string;
-  locationName: string;
-  locationCity: string;
-  checkIn: string;
-  checkOut: string;
-  guests: number;
-  status: string;
-}) => {
+}: Reservation) => {
   return (
     <div
       key={id}

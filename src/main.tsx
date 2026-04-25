@@ -5,14 +5,18 @@ import "./index.css";
 import { routes } from "@/routes/root.r";
 import { CookiesProvider } from "react-cookie";
 
-// ? Providers
-import { UserProvider } from "@/providers/user-provider.p";
+// ? Context
+import { AdminNavbarProvider } from "@/context/admin-navbar.c";
+import { UserInfoNavbarProvider } from "@/context/user-info-navbar.c";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <CookiesProvider>
-      <UserProvider />
-      <RouterProvider router={createBrowserRouter(routes)} />
+      <AdminNavbarProvider>
+        <UserInfoNavbarProvider>
+          <RouterProvider router={createBrowserRouter(routes)} />
+        </UserInfoNavbarProvider>
+      </AdminNavbarProvider>
     </CookiesProvider>
   </StrictMode>,
 );

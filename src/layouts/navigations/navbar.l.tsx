@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+// ? Hooks
+import { useAdminNavbar } from "@/context/admin-navbar.c";
+import { useUserInfoNavbar } from "@/context/user-info-navbar.c";
+
 // ? Components
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -23,20 +27,8 @@ export function NavbarLayout({
   childrenOutside?: React.ReactNode;
   className?: string;
 }): React.ReactNode {
-  const [user, setUser] = useState(null);
-  const [authorized, setAuthorized] = useState(user !== null);
-
-  useEffect(() => {
-    const initializeUser = () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-        setAuthorized(true);
-      }
-    };
-
-    initializeUser();
-  }, []);
+  const { setActiveMenu } = useAdminNavbar();
+  const { user } = useUserInfoNavbar();
 
   return (
     <div className="flex flex-col items-center">
@@ -55,7 +47,7 @@ export function NavbarLayout({
               </Link>
             </div>
             <div className="space-x-4">
-              {authorized ? (
+              {user !== undefined && user !== null ? (
                 <div className="flex items-center gap-x-2">
                   <p>{user?.email}</p>
                   <DropdownMenu>
@@ -69,13 +61,19 @@ export function NavbarLayout({
                     <DropdownMenuContent className="mr-8">
                       <DropdownMenuGroup>
                         <DropdownMenuLabel>Administrative</DropdownMenuLabel>
-                        <Link to="/a">
+                        <Link to="/a" onClick={() => setActiveMenu(0)}>
                           <DropdownMenuItem>Dashboard</DropdownMenuItem>
                         </Link>
-                        <Link to="/a/reservations">
+                        <Link
+                          to="/a/reservations"
+                          onClick={() => setActiveMenu(1)}
+                        >
                           <DropdownMenuItem>Reservations</DropdownMenuItem>
                         </Link>
-                        <Link to="/a/locations">
+                        <Link
+                          to="/a/locations"
+                          onClick={() => setActiveMenu(2)}
+                        >
                           <DropdownMenuItem>Locations</DropdownMenuItem>
                         </Link>
                       </DropdownMenuGroup>
