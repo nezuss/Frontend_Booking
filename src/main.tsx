@@ -3,9 +3,12 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./index.css";
 import { routes } from "@/routes/root.r";
+import { CookiesProvider } from "react-cookie";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={createBrowserRouter(routes)} />
+    <CookiesProvider>
+      <RouterProvider router={createBrowserRouter(routes)} />
+    </CookiesProvider>
   </StrictMode>,
 );
