@@ -1,14 +1,7 @@
 import { client } from "./client";
 
-class AuthResponse {
-  success: boolean;
-  content: string;
-
-  constructor(data: { success: boolean; content: string }) {
-    this.success = data.success;
-    this.content = data.content;
-  }
-}
+// ? Classes
+import { ApiResponse } from "@/classes/api-responce.c";
 
 export const register = async (
   name: string,
@@ -18,24 +11,24 @@ export const register = async (
   return client
     .post("/auth/register", { name, email, password })
     .then((res) => {
-      return new AuthResponse({
+      return new ApiResponse({
         success: true,
         content: res.data,
       });
     })
     .catch((error) => {
       if (error.response) {
-        return new AuthResponse({
+        return new ApiResponse({
           success: false,
           content: error.response.data,
         });
       } else if (error.request) {
-        return new AuthResponse({
+        return new ApiResponse({
           success: false,
           content: "No Response: " + error.request,
         });
       } else {
-        return new AuthResponse({
+        return new ApiResponse({
           success: false,
           content: "Error Message: " + error.message,
         });
@@ -47,24 +40,24 @@ export const login = async (email: string, password: string) => {
   return client
     .post("/auth/login", { email, password })
     .then((res) => {
-      return new AuthResponse({
+      return new ApiResponse({
         success: true,
         content: res.data,
       });
     })
     .catch((error) => {
       if (error.response) {
-        return new AuthResponse({
+        return new ApiResponse({
           success: false,
           content: error.response.data,
         });
       } else if (error.request) {
-        return new AuthResponse({
+        return new ApiResponse({
           success: false,
           content: "No Response: " + error.request,
         });
       } else {
-        return new AuthResponse({
+        return new ApiResponse({
           success: false,
           content: "Error Message: " + error.message,
         });

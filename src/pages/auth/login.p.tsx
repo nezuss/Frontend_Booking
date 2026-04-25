@@ -28,7 +28,6 @@ export function Login(): React.ReactNode {
         setJwt("token", result.content?.token, {
           path: "/",
           secure: true,
-          httpOnly: true,
           maxAge: 3600,
         });
 

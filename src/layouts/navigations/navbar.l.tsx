@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // ? Components
@@ -23,7 +23,20 @@ export function NavbarLayout({
   childrenOutside?: React.ReactNode;
   className?: string;
 }): React.ReactNode {
-  const [authorized, setAuthorized] = useState(true);
+  const [user, setUser] = useState(null);
+  const [authorized, setAuthorized] = useState(user !== null);
+
+  useEffect(() => {
+    const initializeUser = () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+        setAuthorized(true);
+      }
+    };
+
+    initializeUser();
+  }, []);
 
   return (
     <div className="flex flex-col items-center">
@@ -44,11 +57,13 @@ export function NavbarLayout({
             <div className="space-x-4">
               {authorized ? (
                 <div className="flex items-center gap-x-2">
-                  <p>testmail@nig.gga</p>
+                  <p>{user?.email}</p>
                   <DropdownMenu>
                     <DropdownMenuTrigger>
                       <Avatar>
-                        <AvatarFallback>U</AvatarFallback>
+                        <AvatarFallback>
+                          {user?.name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="mr-8">
