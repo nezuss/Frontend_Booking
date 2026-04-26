@@ -111,16 +111,14 @@ export const createLocation = async ({
 }) => {
   return clientCredentials
     .post(`/admin/locations`, {
-      params: {
-        name,
-        city,
-        address,
-        description,
-        rating,
-        hasFreeParking,
-        hasWellnessCenter,
-        imageUrl,
-      },
+      name,
+      city,
+      address,
+      description,
+      rating,
+      hasFreeParking,
+      hasWellnessCenter,
+      imageUrl,
     })
     .then((res) => {
       return new ApiResponse({
@@ -171,16 +169,14 @@ export const updateLocation = async ({
 }) => {
   return clientCredentials
     .put(`/admin/locations/${id}`, {
-      params: {
-        name,
-        city,
-        address,
-        description,
-        rating,
-        hasFreeParking,
-        hasWellnessCenter,
-        imageUrl,
-      },
+      name,
+      city,
+      address,
+      description,
+      rating,
+      hasFreeParking,
+      hasWellnessCenter,
+      imageUrl,
     })
     .then((res) => {
       return new ApiResponse({

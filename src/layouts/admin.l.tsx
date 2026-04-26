@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 // ? Hooks
@@ -10,8 +11,10 @@ export function AdminLayout(): React.ReactNode {
   const navigate = useNavigate();
   const { user } = useUserInfoNavbar();
 
-  if (!user) return null;
-  if (user.role !== "admin") navigate("/");
+  useEffect(() => {
+    if (user === undefined || !user) navigate("/");
+    if (user?.role !== "admin") navigate("/");
+  }, [user, navigate]);
 
   return (
     <>

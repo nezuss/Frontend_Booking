@@ -42,8 +42,8 @@ export function Footer(): React.ReactNode {
   return (
     <footer className="w-full bg-secondary py-8 px-16 space-y-8 mt-8">
       <div className="grid grid-cols-6">
-        {menus.map((menu) => (
-          <div key={menu.title} className="space-y-4">
+        {menus.map((menu, index) => (
+          <div key={"cl-ft-" + index} className="space-y-4">
             <h3 className="text-xl font-semibold">{menu.title}</h3>
             <div className="space-y-2">
               {menu.items.map((item) => (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 // ? Icons
 import { Star } from "lucide-react";
@@ -11,13 +12,18 @@ import { Button } from "@/components/ui/button";
 
 export function Locations(): React.ReactNode {
   const [locations, setLocations] = useState<Location[]>([]);
+  const [searchParams] = useSearchParams();
 
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const result = await search({});
+        const result = await search({
+          city: searchParams.get("city"),
+          search: searchParams.get("name"),
+          rating: searchParams.get("rating"),
+        });
 
         if (result.success) {
           setError("");

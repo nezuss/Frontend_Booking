@@ -15,7 +15,7 @@ export function NavbarClient(): React.ReactNode {
       <div className="space-x-4">
         {listOfServices.map((service, index) => (
           <Button
-            key={index}
+            key={"cl-nb-" + index}
             variant={index === activeService ? "outline" : "ghost"}
             size="lg"
             className={
