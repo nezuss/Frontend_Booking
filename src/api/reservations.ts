@@ -16,12 +16,10 @@ export const createReservation = async ({
 }) => {
   return clientCredentials
     .post("/reservations", {
-      params: {
-        roomId,
-        checkIn,
-        checkOut,
-        guests,
-      },
+      roomId,
+      checkIn,
+      checkOut,
+      guests,
     })
     .then((res) => {
       return new ApiResponse({

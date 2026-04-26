@@ -47,8 +47,6 @@ export function Locations() {
     data: Omit<Location, "id">,
     id?: number,
   ) => {
-    console.log("DATA FROM HANDLER");
-    console.log(data);
     try {
       const result = id
         ? await updateLocation({ ...data, id })

@@ -55,7 +55,7 @@ export const search = async ({
 export const searchAdvanced = async ({
   checkIn,
   checkOut,
-  guestsCount,
+  guests,
   search,
   city,
   rating,
@@ -64,7 +64,7 @@ export const searchAdvanced = async ({
 }: {
   checkIn: string;
   checkOut: string;
-  guestsCount: number;
+  guests: number;
   search?: string;
   city?: string;
   rating?: number;
@@ -74,9 +74,9 @@ export const searchAdvanced = async ({
   return await client
     .get("/rooms/availability", {
       params: {
-        checkIn,
-        checkOut,
-        guestsCount,
+        checkIn: checkIn.toISOString().split("T")[0],
+        checkOut: checkOut.toISOString().split("T")[0],
+        guests,
         search,
         city,
         rating,

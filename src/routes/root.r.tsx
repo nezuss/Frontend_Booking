@@ -12,7 +12,7 @@ import { RootLayout } from "@/layouts/root.l";
 import { Home } from "@/pages/home.p";
 import { AboutUs } from "@/pages/about-us.p";
 import { NotFound } from "@/pages/error/not-found.p";
-import { Locations } from "@/pages/locations.p";
+import { Locations } from "@/pages/rooms.p";
 
 export const routes: RouteObject[] = [
   ...authRoutes,

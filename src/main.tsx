@@ -8,14 +8,17 @@ import { CookiesProvider } from "react-cookie";
 // ? Context
 import { AdminNavbarProvider } from "@/context/admin-navbar.c";
 import { UserInfoNavbarProvider } from "@/context/user-info-navbar.c";
+import { SearchProvider } from "@/context/search.c";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <CookiesProvider>
       <AdminNavbarProvider>
-        <UserInfoNavbarProvider>
-          <RouterProvider router={createBrowserRouter(routes)} />
-        </UserInfoNavbarProvider>
+        <SearchProvider>
+          <UserInfoNavbarProvider>
+            <RouterProvider router={createBrowserRouter(routes)} />
+          </UserInfoNavbarProvider>
+        </SearchProvider>
       </AdminNavbarProvider>
     </CookiesProvider>
   </StrictMode>,

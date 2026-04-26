@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
+
+// ? Icons
+import { ChevronDownIcon } from "lucide-react";
+
+// ? Hooks
+import { useSearch } from "@/context/search.c";
 
 // ? Layouts
 import { NavbarLayout } from "@/layouts/navigations/navbar.l";
@@ -7,27 +14,30 @@ import { NavbarLayout } from "@/layouts/navigations/navbar.l";
 // ? Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export function Navbar(): React.ReactNode {
   const [activeService, setActiveService] = useState<number>(0);
-  const [place, setPlace] = useState<string>();
-  const [name, setName] = useState<string>();
-  const [rating, setRating] = useState<number>();
-  const [error, setError] = useState<string>();
+  const {
+    checkIn,
+    setCheckIn,
+    checkOut,
+    setCheckOut,
+    search: place,
+    setSearch: setPlace,
+    guests,
+    setGuests,
+    error,
+    findRooms,
+  } = useSearch();
+
   const navigate = useNavigate();
   const listOfServices = ["Accommodation", "Car rental", "Planes", "Taxis"];
-
-  const handleSearch = () => {
-    if (rating && (rating < 1 || rating > 5)) {
-      setError("Please enter a valid rating - number between 1 and 5");
-      return;
-    }
-
-    setError("");
-    navigate(
-      `/locations?place=${place == undefined ? "" : place}&name=${name == undefined ? "" : name}&rating=${rating == undefined ? "" : rating}`,
-    );
-  };
 
   return (
     <NavbarLayout
@@ -45,21 +55,67 @@ export function Navbar(): React.ReactNode {
               />
               <Input
                 className="bg-foreground/3 text-foreground"
-                type="text"
-                placeholder="Specify a name"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-              />
-              <Input
-                className="bg-foreground/3 text-foreground"
                 type="number"
-                placeholder="Specify a rating"
-                max={5}
-                min={1}
-                onChange={(e) => setRating(e.target.value)}
-                value={rating}
+                placeholder="How many people"
+                onChange={(e) => setGuests(Number(e.target.value))}
+                value={guests}
               />
-              <Button onClick={handleSearch}>Search</Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    data-empty={!checkIn}
+                    className="min-w-48 bg-foreground/3 text-foreground justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                  >
+                    {checkIn ? (
+                      format(checkIn, "PPP")
+                    ) : (
+                      <span>Check-in date</span>
+                    )}
+                    <ChevronDownIcon data-icon="inline-end" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={checkIn}
+                    onSelect={setCheckIn}
+                    defaultMonth={checkIn}
+                  />
+                </PopoverContent>
+              </Popover>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    data-empty={!checkOut}
+                    className="min-w-48 bg-foreground/3 text-foreground justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                  >
+                    {checkOut ? (
+                      format(checkOut, "PPP")
+                    ) : (
+                      <span>Check-out date</span>
+                    )}
+                    <ChevronDownIcon data-icon="inline-end" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={checkOut}
+                    onSelect={setCheckOut}
+                    defaultMonth={checkOut}
+                  />
+                </PopoverContent>
+              </Popover>
+              <Button
+                onClick={() => {
+                  findRooms();
+                  navigate("/locations");
+                }}
+              >
+                Search
+              </Button>
             </div>
           </div>
         </div>
