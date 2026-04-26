@@ -84,7 +84,7 @@ export function Locations() {
 
   return (
     <div>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-col sm:flex-row justify-between">
         <h1 className="text-4xl mb-4">Locations List</h1>
         <LocationForm
           title={"Create Location"}
@@ -139,10 +139,10 @@ const Location = ({
   return (
     <div
       key={id}
-      className="min-h-78 relative flex flex-row border rounded-xl gap-x-6 p-4"
+      className="min-h-78 relative flex flex-col md:flex-row border rounded-xl gap-x-6 p-4"
     >
       <div
-        className="min-w-86 bg-cover bg-center rounded-xl"
+        className="min-w-64 md:min-w-86 min-h-64 bg-cover bg-center rounded-xl"
         style={{ backgroundImage: `url(${imageUrl})` }}
       ></div>
       <div className="flex flex-col justify-between">

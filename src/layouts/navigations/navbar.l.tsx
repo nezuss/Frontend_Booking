@@ -40,7 +40,7 @@ export function NavbarLayout({
         }
       >
         <div className="max-w-5xl w-full flex flex-col gap-y-6">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-y-2">
             <div>
               <Link to="/">
                 <h2 className="text-3xl font-bold">Booking.com</h2>

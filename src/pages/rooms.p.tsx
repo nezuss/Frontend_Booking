@@ -61,7 +61,7 @@ export function Locations(): React.ReactNode {
   return (
     <div className="flex flex-col items-center">
       <div className="max-w-5xl w-full flex flex-col gap-y-6">
-        <div className="w-full flex flex-row items-center gap-x-4 border rounded-2xl p-4 *:w-full">
+        <div className="w-full flex flex-col md:flex-row items-center gap-4 border rounded-2xl p-4 *:w-full">
           <FormField
             label="Search..."
             value={search}

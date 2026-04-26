@@ -45,7 +45,7 @@ export function Navbar(): React.ReactNode {
         <div className="max-w-5xl w-full flex flex-col gap-y-6">
           <div className="bg-background flex flex-col items-center border gap-y-2 p-4 rounded-2xl -translate-y-8">
             {error && <p className="text-red-500">{error}</p>}
-            <div className="w-full flex flex-row items-center gap-x-2">
+            <div className="w-full flex flex-col lg:flex-row items-center gap-2">
               <Input
                 className="bg-foreground/3 text-foreground"
                 type="text"
@@ -65,7 +65,7 @@ export function Navbar(): React.ReactNode {
                   <Button
                     variant={"outline"}
                     data-empty={!checkIn}
-                    className="min-w-48 bg-foreground/3 text-foreground justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                    className="w-full lg:w-auto min-w-48 bg-foreground/3 text-foreground justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
                   >
                     {checkIn ? (
                       format(checkIn, "PPP")
@@ -89,7 +89,7 @@ export function Navbar(): React.ReactNode {
                   <Button
                     variant={"outline"}
                     data-empty={!checkOut}
-                    className="min-w-48 bg-foreground/3 text-foreground justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
+                    className="w-full lg:w-auto min-w-48 bg-foreground/3 text-foreground justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
                   >
                     {checkOut ? (
                       format(checkOut, "PPP")
@@ -113,6 +113,7 @@ export function Navbar(): React.ReactNode {
                   findRooms();
                   navigate("/locations");
                 }}
+                className="w-full lg:w-auto"
               >
                 Search
               </Button>
@@ -121,7 +122,7 @@ export function Navbar(): React.ReactNode {
         </div>
       }
     >
-      <div className="space-x-4">
+      <div className="flex flex-wrap justify-center md:justify-start gap-x-4">
         {listOfServices.map((service, index) => (
           <Button
             key={"mnb-lst-" + index}

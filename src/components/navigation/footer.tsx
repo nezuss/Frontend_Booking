@@ -13,53 +13,71 @@ interface Menu {
 export function Footer(): React.ReactNode {
   const menus: Menu[] = [
     {
-      title: "Test",
+      title: "Sitemap",
       items: [
         {
-          label: "test",
-          href: "test",
+          label: "Home",
+          href: "/",
         },
         {
-          label: "test",
-          href: "test",
+          label: "Rooms",
+          href: "/locations",
         },
         {
-          label: "test",
-          href: "test",
-        },
-        {
-          label: "test",
-          href: "test",
+          label: "About Us",
+          href: "/about-us",
         },
       ],
     },
     {
-      title: "test",
-      items: [],
+      title: "Social",
+      items: [
+        {
+          label: "Facebook",
+          href: "https://www.facebook.com/",
+        },
+        {
+          label: "Instagram",
+          href: "https://www.instagram.com/",
+        },
+        {
+          label: "Twitter",
+          href: "https://www.twitter.com/",
+        },
+      ],
     },
   ];
 
   return (
     <footer className="w-full bg-secondary py-8 px-16 space-y-8 mt-8">
-      <div className="grid grid-cols-6">
-        {menus.map((menu, index) => (
-          <div key={"cl-ft-" + index} className="space-y-4">
-            <h3 className="text-xl font-semibold">{menu.title}</h3>
-            <div className="space-y-2">
-              {menu.items.map((item) => (
-                <div key={item.label}>
-                  <Link to={item.href}>{item.label}</Link>
-                </div>
-              ))}
+      <div className="flex flex-col md:flex-row justify-between gap-8">
+        <div>
+          <h2 className="text-2xl">
+            Booking<span className="text-primary">.com</span>
+          </h2>
+          <p>Find your perfect stay with us.</p>
+        </div>
+        <div className="grid gap-cols-1 justify-center sm:justify-start sm:grid-cols-2 gap-8">
+          {menus.map((menu, index) => (
+            <div key={"cl-ft-" + index} className="space-y-4">
+              <h3 className="text-xl font-semibold">{menu.title}</h3>
+              <div className="space-y-2">
+                {menu.items.map((item) => (
+                  <div key={item.label}>
+                    <Link to={item.href}>{item.label}</Link>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <hr />
       <div className="flex justify-center">
         <p>
+          &copy; {new Date().getFullYear()}{" "}
           <Link to="/" className="text-primary">
-            Booking.com
+            Booking.com.
           </Link>{" "}
           All rights reserved.
         </p>

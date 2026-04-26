@@ -28,7 +28,7 @@ export function NavbarAdmin(): React.ReactNode {
 
   return (
     <NavbarLayout className="mb-6">
-      <div className="space-x-4">
+      <div className="flex flex-wrap justify-center md:justify-start gap-4">
         {listOfServices.map((service, index) => (
           <Link key={index} to={service.path}>
             <Button
